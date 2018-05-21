@@ -8,7 +8,7 @@ app.use(cookieParser('hanzheng'))
 
 // 按照上面的解释，设置 session 的可选参数
 app.use(session({
-  secret: 'recommand 128 bytes random string', // 建议使用 128 个字符的随机字符串
+  secret: 'hanzheng', // 建议使用 128 个字符的随机字符串
   cookie: { maxAge: 60 * 1000 },
   resave: false,
   saveUninitialized: false, // 是否保存未初始化的会话
@@ -19,6 +19,9 @@ app.get('/', function(req, res) {
   // 如果存在则增加一次，否则为 session 设置 isVisit 字段，并初始化为 1。
   // console.log(req.cookies.islogin)
   // console.log(req.signedCookies.islogin) // 设置了signed为true时，req.signedCookies代表cookie集合
+  // console.log(req.signedCookies['connect.sid']); //如果cookie-parser和express-session使用秘钥不同，解密的req.signedCookies['connect.sid'] = false；
+  // console.log(req.session.id);
+  console.log(req.connection.remoteAddress);
 
   if (req.session.isVisit) {
     req.sessionStore.get(req.session.id, function(a, session) {
@@ -45,4 +48,4 @@ app.get('/', function(req, res) {
   }
 });
 
-app.listen(5000);
+app.listen(5000, '0.0.0.0');
